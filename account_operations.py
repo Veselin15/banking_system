@@ -22,10 +22,6 @@ def create_account(username, password):
         conn.close()
 
 
-
-#asassasasa
-
-
 def login(username, password):
     conn = connect_db()
     if conn:
