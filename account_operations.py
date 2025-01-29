@@ -23,7 +23,7 @@ def create_account(username, password):
 
 
 
-#asassasasaSDAASAS
+#asassasasa
 
 
 def login(username, password):
