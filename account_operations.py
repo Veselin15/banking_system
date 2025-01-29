@@ -49,4 +49,12 @@ def login(username, password):
 
     return False
 
+# account_operations.py
+def get_balance(username):
+    # You should replace this with actual logic to retrieve the balance.
+    # This is a simple placeholder.
+    # e.g., fetch balance from a database or in-memory storage.
+    user_balance = 1000  # This is a mock value
+    return user_balance
+
 
