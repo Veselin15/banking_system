@@ -53,10 +53,47 @@ def login(username, password):
 
 # account_operations.py
 def get_balance(username):
-    # You should replace this with actual logic to retrieve the balance.
-    # This is a simple placeholder.
-    # e.g., fetch balance from a database or in-memory storage.
-    user_balance = 1000  # This is a mock value
-    return user_balance
+    conn = connect_db()
+    if conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT balance FROM accounts WHERE username = %s", (username,))
+        result = cursor.fetchone()
+        cursor.close()
+        conn.close()
+        if result:
+            return result[0]
+    return 0
 
 
+def deposit(username, amount):
+    conn = connect_db()
+    if conn:
+        cursor = conn.cursor()
+        cursor.execute("UPDATE accounts SET balance = balance + %s WHERE username = %s RETURNING balance", (amount, username))
+        new_balance = cursor.fetchone()[0]
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return new_balance
+    return 0
+
+
+def withdraw(username, amount):
+    conn = connect_db()
+    if conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT balance FROM accounts WHERE username = %s", (username,))
+        current_balance = cursor.fetchone()[0]
+
+        if current_balance >= amount:
+            cursor.execute("UPDATE accounts SET balance = balance - %s WHERE username = %s RETURNING balance", (amount, username))
+            new_balance = cursor.fetchone()[0]
+            conn.commit()
+            cursor.close()
+            conn.close()
+            return new_balance
+        else:
+            cursor.close()
+            conn.close()
+            raise ValueError("Insufficient funds")
+    return 0
