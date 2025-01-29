@@ -1,6 +1,8 @@
 import bcrypt
 from db_connection import connect_db
 import re
+
+
 def is_valid_password(password):
     if len(password) < 8:  # Minimum length check
         return False
