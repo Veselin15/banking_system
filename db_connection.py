@@ -11,6 +11,8 @@ def connect_db():
         )
         return connection
 
+
+
     except Exception as e:
         print(f"Unable to connect to the database: {e}")
         return None
